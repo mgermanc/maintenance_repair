@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Repair Order Form View Inherit -->
+    <record id="view_repair_order_form_inherit_maintenance" model="ir.ui.view">
+        <field name="name">repair.order.form.inherit.maintenance</field>
+        <field name="model">repair.order</field>
+        <field name="inherit_id" ref="repair.view_repair_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_id']" position="after">
+                <field name="maintenance_id"/>
+                <field name="equipment_id"/>
+                <field name="copy_value" required="state == 'done'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
