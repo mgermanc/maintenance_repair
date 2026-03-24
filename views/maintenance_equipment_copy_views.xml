@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id='maintenance_equipment_copy_view_form' model='ir.ui.view'>
+        <field name="name">maintenance.equipment.copy.form</field>
+        <field name="model">maintenance.equipment.copy</field>
+        <field name="arch" type="xml">
+            <form string="Copy Logs">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="equipment_id"/>
+                            <field name="value" class="oe_inline"/>
+                            <field name="copies_added"/>
+                            <field name="date"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id='maintenance_equipment_copy_view_tree' model='ir.ui.view'>
+        <field name="name">maintenance.equipment.copy.list</field>
+        <field name="model">maintenance.equipment.copy</field>
+        <field name="arch" type="xml">
+            <list string="Copy Logs" editable="top">
+                <field name="date" />
+                <field name="equipment_id" widget="many2one_avatar"/>
+                <field name="value" />
+                <field name="copies_added" />
+            </list>
+        </field>
+    </record>
+
+    <record id='maintenance_equipment_copy_view_search' model='ir.ui.view'>
+        <field name="name">maintenance.equipment.copy.search</field>
+        <field name="model">maintenance.equipment.copy</field>
+        <field name="arch" type="xml">
+            <search string="Equipment Copies" >
+                <field name="equipment_id"/>
+                <field name="value"/>
+                <field name="date"/>
+                <group>
+                    <filter name="groupby_equipment" context="{'group_by': 'equipment_id'}" string="Equipment"/>
+                    <filter name="groupby_date" context="{'group_by': 'date'}" string="Date"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="maintenance_equipment_copy_view_graph" model="ir.ui.view">
+       <field name="name">maintenance.equipment.copy.graph</field>
+       <field name="model">maintenance.equipment.copy</field>
+       <field name="arch" type="xml">
+            <graph string="Copy Values Per Equipment" sample="1">
+                <field name="equipment_id"/>
+                <field name="copies_added" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id='maintenance_equipment_copy_action' model='ir.actions.act_window'>
+        <field name="name">Copies</field>
+        <field name="res_model">maintenance.equipment.copy</field>
+        <field name="view_mode">list,form,graph</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            Create a new copy log
+          </p><p>
+            You can add various copy entries for equipments.
+          </p>
+        </field>
+    </record>
+
+    <!-- Pivot view for Reporting -->
+    <record id="maintenance_equipment_copy_view_pivot" model="ir.ui.view">
+        <field name="name">maintenance.equipment.copy.pivot</field>
+        <field name="model">maintenance.equipment.copy</field>
+        <field name="arch" type="xml">
+            <pivot string="Copy Values Analysis" sample="1">
+                <field name="equipment_id" type="row"/>
+                <field name="date" type="col" interval="month"/>
+                <field name="copies_added" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Action for Reporting -->
+    <record id="maintenance_equipment_copy_action_reports" model="ir.actions.act_window">
+        <field name="name">Análisis de Contadores</field>
+        <field name="res_model">maintenance.equipment.copy</field>
+        <field name="path">maintenance-copies-analysis</field>
+        <field name="view_mode">graph,pivot,list,form</field>
+        <field name="context">{
+            'search_default_active': True,
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Add a new copy log
+            </p><p>
+                Track the copy values of your equipment over time.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item under Maintenance > Reporting -->
+    <menuitem
+        id="maintenance_equipment_copy_reporting"
+        action="maintenance_equipment_copy_action_reports"
+        parent="maintenance.maintenance_reporting"
+        sequence="5"/>
+</odoo>
